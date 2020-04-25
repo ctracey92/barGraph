@@ -320,8 +320,10 @@ const yScale = d3.scaleLinear()
     .range([h-padding,padding])
 
 
+
 const svg = d3.select("div").append("svg").attr("height",h).attr("width",w)
 
+let tooltip = d3.select("body").append("div").attr("class", "toolTip");
 
 
 svg.selectAll("rect")
@@ -336,6 +338,36 @@ svg.selectAll("rect")
     .attr("fill","blue")
     .attr("data-date",d => d[0])
     .attr("data-GDP",d => d[1])
+    .on("mouseover",d => {
+        d3.select(event.currentTarget).attr("fill","black")
+        let date = d[0].split("-")
+        let q = ""
+        switch(date[1]){
+            case "01":
+                q = "Q1"
+                break;
+            case "04":
+                q = "Q2"
+                break;
+            case "07":
+                q = "Q3"
+                break;
+            case "10":
+                q = "Q4"
+                break;
+
+        }
+        tooltip
+              .style("left", d3.event.pageX - 50 + "px")
+              .style("top", "50px")
+              .style("display", "inline-block")
+              .html(`${date[0]} ${q}<br>\$${d[1]} Billion`);
+    })
+    .on("mouseout",d => {
+        d3.select(event.currentTarget).attr("fill","blue")
+
+    })
+    
     
  
 
