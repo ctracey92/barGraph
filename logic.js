@@ -349,11 +349,13 @@ const svg = d3.select("div").append("svg").attr("height",h).attr("width",w)
 
 
 svg.selectAll("rect")
- .data(dataset.data)
- .enter()
- .append("rect")
- .style("height", d => d[1]/50)
- .style("width", 3)
- .attr("y",0)
- .attr("x",(d,i) => i*3)
- .attr("fill","blue")
+    .data(dataset.data)
+    .enter()
+    .append("rect")
+    .style("height", d => d[1]/50)
+    .style("width", 3)
+    .attr("y",(d,i)=>h - d[1]/50)
+    .attr("x",(d,i) => i*3)
+    .attr("fill","blue")
+ 
+
