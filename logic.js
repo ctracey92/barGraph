@@ -298,66 +298,49 @@ const dataset = {
 };
 
 
-// const w = 900;
-// const h = 500;
-// const padding = 60;
-
-// const xScale = d3
-//   .scaleLinear()
-//   .domain([0, d3.max(dataset.data, (d) => d[0])])
-//   .range([padding, w - padding])
-
-
-// const yScale = d3
-//   .scaleLinear()
-//   .domain([0, d3.max(dataset, (d) => d[1])])
-//   .range([h - padding, padding])
-
-
-
-// const svg = d3.select("body").append("svg").attr("width", w).attr("height", h);
-
-// svg
-//   .selectAll("rect")
-//   .data(dataset.data)
-//   .enter()
-//   .append("rect")
-//   .attr("x", (d, i) => i *3)
-//   .attr("y",0)
-//   .attr("width", 25)
-//   .attr("height", (d, i) => {
-//     return d[1]/50;
-//   })
-
-// const xAxis = d3.axisBottom(xScale);
-// const yAxis = d3.axisLeft(yScale);
-
-// svg
-//   .append("g")
-//   .attr("transform", "translate(0," + (h - padding) + ")")
-//   .call(xAxis);
-
-
-// svg
-//   .append("g")
-//   .attr("transform", "translate(0," + (h - padding) + ")")
-//   .call(yAxis);
-
 const w = 1000;
 const h = 500;
+const padding = 40;
+
+const maxVal = d3.max(dataset.data, d => d[1])
+console.log(maxVal)
+
+const xScale = d3.scaleTime()
+    .domain([d3.min(dataset.data, d => d[0]),d3.max(dataset.data, d => d[0])])
+    .range([padding, w-padding])
+
+
+const yScale = d3.scaleLinear()
+    .domain([0,maxVal])
+    .range([h-padding,padding])
+
+
 const svg = d3.select("div").append("svg").attr("height",h).attr("width",w)
-const maxHeight = d3.max(dataset.data, d => d[1])
-console.log(maxHeight)
+
 
 
 svg.selectAll("rect")
     .data(dataset.data)
     .enter()
     .append("rect")
-    .style("height", d => (d[1]/maxHeight) * h)
+    .attr("class","bar")
+    .style("height", d => h - yScale(d[1]) - padding)
     .style("width", 3)
-    .attr("y",(d,i)=>h - (d[1]/maxHeight) * h)
-    .attr("x",(d,i) => i*3)
+    .attr("y",(d,i)=>yScale(d[1]))
+    .attr("x",(d,i) => (i*3)+40)
     .attr("fill","blue")
  
+
+const yAxis = d3.axisLeft(yScale);
+const xAxis = d3.axisBottom(xScale)
+
+svg.append("g")
+    .attr("id","y-axis")
+    .attr("transform", "translate(" + padding + ",0)")
+    .call(yAxis)
+
+svg.append("g")
+    .attr("id","x-axis")
+    .attr("transform", "translate(0," + (h - padding) + ")")
+    .call(xAxis);
 
