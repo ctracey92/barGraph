@@ -303,11 +303,16 @@ const h = 500;
 const padding = 40;
 
 const maxVal = d3.max(dataset.data, d => d[1])
-console.log(maxVal)
+
+let minDate = d3.min(dataset.data, d => d[0]);
+let maxDate = d3.max(dataset.data, d => d[0]);
+
+console.log(minDate,maxDate)
 
 const xScale = d3.scaleTime()
-    .domain([d3.min(dataset.data, d => d[0]),d3.max(dataset.data, d => d[0])])
+    .domain([new Date(minDate),new Date(maxDate)])
     .range([padding, w-padding])
+
 
 
 const yScale = d3.scaleLinear()
@@ -327,12 +332,17 @@ svg.selectAll("rect")
     .style("height", d => h - yScale(d[1]) - padding)
     .style("width", 3)
     .attr("y",(d,i)=>yScale(d[1]))
-    .attr("x",(d,i) => (i*3)+40)
+    .attr("x",(d,i) => xScale(new Date (d[0])))
     .attr("fill","blue")
+    .attr("data-date",d => d[0])
+    .attr("data-GDP",d => d[1])
+    
  
 
-const yAxis = d3.axisLeft(yScale);
+const yAxis = d3.axisLeft(yScale)
+
 const xAxis = d3.axisBottom(xScale)
+
 
 svg.append("g")
     .attr("id","y-axis")
@@ -343,4 +353,3 @@ svg.append("g")
     .attr("id","x-axis")
     .attr("transform", "translate(0," + (h - padding) + ")")
     .call(xAxis);
-
