@@ -307,8 +307,6 @@ const maxVal = d3.max(dataset.data, d => d[1])
 let minDate = d3.min(dataset.data, d => d[0]);
 let maxDate = d3.max(dataset.data, d => d[0]);
 
-console.log(minDate,maxDate)
-
 const xScale = d3.scaleTime()
     .domain([new Date(minDate),new Date(maxDate)])
     .range([padding, w-padding])
@@ -321,9 +319,16 @@ const yScale = d3.scaleLinear()
 
 
 
-const svg = d3.select("div").append("svg").attr("height",h).attr("width",w)
+const svg = d3.select("#chart").append("svg").attr("height",h).attr("width",w)
 
-let tooltip = d3.select("body").append("div").attr("class", "toolTip");
+let tooltip = d3.select(".container").append("div").attr("class", "toolTip");
+
+svg.append('text')
+    .attr('transform', "rotate(-90)")
+    .text('Gross Domestic Product')
+    .attr("x", -300)
+    .attr('y', 60)
+    .style("font-size", 20 +"px")
 
 
 svg.selectAll("rect")
@@ -335,10 +340,10 @@ svg.selectAll("rect")
     .style("width", 3)
     .attr("y",(d,i)=>yScale(d[1]))
     .attr("x",(d,i) => xScale(new Date (d[0])))
-    .attr("fill","blue")
+    .attr("fill","rgb(51, 173, 255)")
     .attr("data-date",d => d[0])
     .attr("data-GDP",d => d[1])
-    .on("mouseover",d => {
+    .on("mouseover",(d,i) => {
         d3.select(event.currentTarget).attr("fill","black")
         let date = d[0].split("-")
         let q = ""
@@ -358,13 +363,16 @@ svg.selectAll("rect")
 
         }
         tooltip
-              .style("left", d3.event.pageX - 50 + "px")
-              .style("top", "50px")
-              .style("display", "inline-block")
+              .style("left", d3.event.pageX + 50 + "px")
+              .style("top", h - 100 + "px")
+              .style("position", "absolute")
+              .style("display", "flex")
+              .style("opacity", .75)
+              .style("background-color", "lightgrey")
               .html(`${date[0]} ${q}<br>\$${d[1]} Billion`);
     })
     .on("mouseout",d => {
-        d3.select(event.currentTarget).attr("fill","blue")
+        d3.select(event.currentTarget).attr("fill","rgb(51, 173, 255)")
 
     })
     

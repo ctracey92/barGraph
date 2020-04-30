@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="./styles.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="./bootstrap.css" />
     <title>Bar Chart Sample Project</title>
-</head>
-<body>
+  </head>
+  <body>
+    <div class="container mt-5 border border-primary">
+      <h1 id="title" class="text-center">United States GDP</h1>
+      <div id="chart"></div>
+    </div>
 
-        <h1 id='title'>United States GDP</h1>
-        <div id='chart'></div>
-
+    <script src="./jquery.js"></script>
+    <script src="./bootstrap.bundle.min.js"></script>
     <script src="./d3.js"></script>
     <script src="./logic.js"></script>
-</body>
+  </body>
 </html>
